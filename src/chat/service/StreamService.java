@@ -26,12 +26,11 @@ public class StreamService {
     }
 
     public void writeMessageLength(OutputStream wr, int length) throws IOException {
-        wr.write(length & 255);
-        wr.write(length >> 8);
+        writeInt(wr, length);
     }
 
     public int readMessageLength(InputStream rd) throws IOException {
-        return rd.read() + (rd.read() << 8);
+        return readInt(rd);
     }
 
     public void writeMessage(OutputStream wr, byte[] bts) throws IOException {
@@ -61,21 +60,6 @@ public class StreamService {
     public void posliSpravu(String message, OutputStream wr) {
         posliSpravu(null, message, wr);
     }
-
-    public void posliSpravuZoSevera(int idClient, String message, OutputStream wr) {
-        posliSpravu(idClient, message, wr);
-    }
-
-    public void newClient(int idClient, OutputStream wr) {
-        interactClient(idClient, SocketConstants.CLIENT_ENTER, null, wr);
-    }
-
-    public void removeClient(int idClient, OutputStream wr) {
-        interactClient(idClient, SocketConstants.CLIENT_LEAVE, null, wr);
-    }
-
-
-
 
     private void posliSpravu(Integer idClient, String message, OutputStream wr) {
         interactClient(idClient, SocketConstants.NEW_MESSAGE, message, wr);
@@ -108,10 +92,6 @@ public class StreamService {
 
     public void posliUserName(String userName, OutputStream wr) {
         posliUserName(null, userName, wr);
-    }
-
-    public void posliUserNameZoServera(int id, String userName, OutputStream wr) {
-        posliUserName(id, userName, wr);
     }
 
     private void posliUserName(Integer id, String userName, OutputStream wr){

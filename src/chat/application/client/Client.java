@@ -101,7 +101,9 @@ public class Client extends Applet implements Runnable {
     private boolean prijmiSpravu() {
         try {
             int messageType = streamService.readInt(rd);
+            System.out.println("Message type: " + messageType);
             int id = streamService.readInt(rd);
+            System.out.println("Id: " + id);
             switch (messageType) {
                 case NEW_MESSAGE:
                     return newMessage(id);
